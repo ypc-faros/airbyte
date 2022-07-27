@@ -54,6 +54,8 @@ export interface ListConnection {
   connections: WebBackendConnectionRead[];
 }
 
+/** "WebConnectionService" = API endpoints specifically for consumption by the frontend */
+
 function useWebConnectionService() {
   const config = useConfig();
   const middlewares = useDefaultRequestMiddlewares();
@@ -63,11 +65,15 @@ function useWebConnectionService() {
   );
 }
 
+/** "ConnectionService" = more general endpoints, reading directly from the db */
+
 export function useConnectionService() {
   const config = useConfig();
   const middlewares = useDefaultRequestMiddlewares();
   return useInitService(() => new ConnectionService(config.apiUrl, middlewares), [config.apiUrl, middlewares]);
 }
+
+/** returns a connection and a method to refresh its catalog */
 
 export const useConnectionLoad = (
   connectionId: string
@@ -85,6 +91,8 @@ export const useConnectionLoad = (
     refreshConnectionCatalog,
   };
 };
+
+/** trigger a sync (todo: is this really only full refresh syncs like the segment call implies?) */
 
 export const useSyncConnection = () => {
   const service = useConnectionService();
@@ -105,6 +113,8 @@ export const useSyncConnection = () => {
   });
 };
 
+/** trigger a connection reset */
+
 export const useResetConnection = () => {
   const service = useConnectionService();
 
@@ -116,6 +126,8 @@ const useGetConnection = (connectionId: string, options?: { refetchInterval: num
 
   return useSuspenseQuery(connectionsKeys.detail(connectionId), () => service.getConnection(connectionId), options);
 };
+
+/** create a connection */
 
 const useCreateConnection = () => {
   const service = useWebConnectionService();
@@ -168,6 +180,8 @@ const useCreateConnection = () => {
   );
 };
 
+/** delete a connection */
+
 const useDeleteConnection = () => {
   const service = useConnectionService();
   const queryClient = useQueryClient();
@@ -186,6 +200,8 @@ const useDeleteConnection = () => {
   });
 };
 
+/** update a connection */
+
 const useUpdateConnection = () => {
   const service = useWebConnectionService();
   const queryClient = useQueryClient();
@@ -197,6 +213,8 @@ const useUpdateConnection = () => {
   });
 };
 
+/** get a list of connections */
+
 const useConnectionList = (): ListConnection => {
   const workspace = useCurrentWorkspace();
   const service = useWebConnectionService();
@@ -204,9 +222,13 @@ const useConnectionList = (): ListConnection => {
   return useSuspenseQuery(connectionsKeys.lists(), () => service.list(workspace.workspaceId));
 };
 
+/** invalidate the useQuery cache... todo: why is this not a `use...` like the others? */
+
 const invalidateConnectionsList = async (queryClient: QueryClient) => {
   await queryClient.invalidateQueries(connectionsKeys.lists());
 };
+
+/** get a connection's state */
 
 const useGetConnectionState = (connectionId: string) => {
   const service = useConnectionService();
