@@ -100,6 +100,7 @@ const calculateInitialCatalog = (
     const nodeWithId: SyncSchemaStream = { ...apiNode, id: id.toString() };
     const nodeStream = verifySupportedSyncModes(nodeWithId);
 
+    //do not calculate the optimal syncMode if user is editing form (ie: only do it on creation)
     if (isEditMode) {
       return nodeStream;
     }

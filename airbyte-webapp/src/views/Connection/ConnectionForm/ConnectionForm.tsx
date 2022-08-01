@@ -107,6 +107,33 @@ function FormValuesChangeTracker<T>({ onChangeValues }: { onChangeValues?: (valu
   return null;
 }
 
+/** this component is massive and handles both a lot of logic and a lot of pieces that could probably be their own components...
+ *  wondering if we should (a) decouple some of that and (b) keep each component as dumb as it can be.  this file could be
+ *  much more readable! Something like
+ *
+ * <ConnectionForm>
+ *   <ConnectionFormHeader />
+ *   <ScheduleSection />
+ *   <NamespaceSection />
+ *   <SyncCatalogSection />
+ *   <TransformationSection /> (if creation)
+ *   <EditControls />
+ * </ConnectionForm>
+ *
+ * house the form changes in the Formik Context around the entire form, and only submit changed fields during the API call
+ * (API being updated to support this)
+ *
+ * other issues:
+ * --> re-renders make for a janky ui (should debounce the re-render for changing the prefix)
+ * --> lots of conditional rendering here makes this difficult to read... should we instead pass some prop to
+ *     the child components ie: `toDisplay: boolean` and have the component return null if false?
+ * --> ALTERNATIVELY should there be three separate forms:
+ *     --> create
+ *     --> edit
+ *     --> view-only
+ *     and they reuse shared components, but are in fact different (instead of a shared mega-component that handles a lot based on the "mode")
+ */
+
 interface ConnectionFormProps {
   onSubmit: (values: ConnectionFormValues) => Promise<ConnectionFormSubmitResult | void>;
   className?: string;

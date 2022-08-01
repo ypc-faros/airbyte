@@ -217,6 +217,7 @@ const getInitialNormalization = (
     : NormalizationType.basic;
 };
 
+/** determine initial values for the connection form */
 const useInitialValues = (
   connection:
     | WebBackendConnectionRead
@@ -224,13 +225,18 @@ const useInitialValues = (
   destDefinition: DestinationDefinitionSpecificationRead,
   isEditMode?: boolean
 ): FormikConnectionFormValues => {
+  /** determines the initial syncCatalog... should we really be calculating anything here or just reading? */
   const initialSchema = useMemo(
     () =>
+      /** This is interesting -- the method wants a "SyncSchema", and we are sending a "SyncCatalog"... are/should these be different?
+       *  some data is coming from the API (connection.syncCatalog), some is being calculated from the destination definition
+       */
       calculateInitialCatalog(connection.syncCatalog, destDefinition?.supportedDestinationSyncModes || [], isEditMode),
     [connection.syncCatalog, destDefinition, isEditMode]
   );
 
   return useMemo(() => {
+    /** calculate initial values */
     const initialValues: FormikConnectionFormValues = {
       name: connection.name ?? `${connection.source.name} <> ${connection.destination.name}`,
       syncCatalog: initialSchema,
@@ -240,6 +246,7 @@ const useInitialValues = (
       namespaceFormat: connection.namespaceFormat ?? SOURCE_NAMESPACE_TAG,
     };
 
+    /** calculate initial transformation operations and merge with initialValues */
     const operations = connection.operations ?? [];
 
     if (destDefinition.supportsDbt) {
