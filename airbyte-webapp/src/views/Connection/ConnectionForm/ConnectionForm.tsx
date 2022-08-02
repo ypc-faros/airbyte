@@ -96,6 +96,8 @@ export type ConnectionFormMode = "create" | "edit" | "readonly";
 // eslint-disable-next-line react/function-component-definition
 function FormValuesChangeTracker<T>({ onChangeValues }: { onChangeValues?: (values: T) => void }) {
   // Grab values from context
+
+  /** note: we may want to memoize this (and other places this hook is used) https://github.com/jaredpalmer/formik/issues/3289 */
   const { values } = useFormikContext<T>();
   useDebounce(
     () => {
@@ -212,6 +214,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
     <Formik
       initialValues={initialValues}
       validationSchema={connectionValidationSchema}
+      /** in this form we are using both enableReinitialize and ResetForm().  They appear to be incompatible https://github.com/jaredpalmer/formik/issues/3391 */
       enableReinitialize
       onSubmit={onFormSubmit}
     >
