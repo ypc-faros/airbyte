@@ -8,7 +8,9 @@ import PageTitle from "components/PageTitle";
 import { ConnectionConfiguration } from "core/domain/connection";
 import { useCreateSource } from "hooks/services/useSourceHook";
 import useRouter from "hooks/useRouter";
+import { InviteUsersHint } from "packages/cloud/views/users/InviteUsersHint";
 import { useSourceDefinitionList } from "services/connector/SourceDefinitionService";
+import { isCloudApp } from "utils/app";
 import { ConnectorDocumentationWrapper } from "views/Connector/ConnectorDocumentationLayout/ConnectorDocumentationWrapper";
 
 import { SourceForm } from "./components/SourceForm";
@@ -45,6 +47,7 @@ const CreateSourcePage: React.FC = () => {
         <PageTitle title={null} middleTitleBlock={<FormattedMessage id="sources.newSourceTitle" />} />
         <FormPageContent>
           <SourceForm onSubmit={onSubmitSourceStep} sourceDefinitions={sourceDefinitions} hasSuccess={successRequest} />
+          {isCloudApp() && <InviteUsersHint connectorType="source" />}
         </FormPageContent>
       </ConnectorDocumentationWrapper>
     </>
