@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
 
+import { CloudInviteUsersHint } from "components/CloudInviteUsersHint";
 import { FormPageContent } from "components/ConnectorBlocks";
 import HeadTitle from "components/HeadTitle";
 import PageTitle from "components/PageTitle";
@@ -8,9 +9,7 @@ import PageTitle from "components/PageTitle";
 import { ConnectionConfiguration } from "core/domain/connection";
 import { useCreateDestination } from "hooks/services/useDestinationHook";
 import useRouter from "hooks/useRouter";
-import { InviteUsersHint } from "packages/cloud/views/users/InviteUsersHint";
 import { useDestinationDefinitionList } from "services/connector/DestinationDefinitionService";
-import { isCloudApp } from "utils/app";
 import { ConnectorDocumentationWrapper } from "views/Connector/ConnectorDocumentationLayout";
 
 import { DestinationForm } from "./components/DestinationForm";
@@ -50,7 +49,7 @@ export const CreateDestinationPage: React.FC = () => {
             destinationDefinitions={destinationDefinitions}
             hasSuccess={successRequest}
           />
-          {isCloudApp() && <InviteUsersHint connectorType="destination" />}
+          <CloudInviteUsersHint connectorType="destination" />
         </FormPageContent>
       </ConnectorDocumentationWrapper>
     </>
