@@ -8,6 +8,8 @@ describe("Error handling view", () => {
       },
     });
 
+    cy.on("uncaught:exception", () => false);
+
     cy.visit("/");
 
     cy.get("div")
@@ -20,6 +22,8 @@ describe("Error handling view", () => {
       statusCode: 502,
       body: "Failed to fetch",
     });
+
+    cy.on("uncaught:exception", () => false);
 
     cy.visit("/");
 
