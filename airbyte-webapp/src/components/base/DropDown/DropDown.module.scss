@@ -2,6 +2,7 @@
 @use "../../../scss/variables";
 
 .dropdown {
+  /* stylelint-disable-next-line selector-class-pattern */
   > :global(.react-select__control) {
     background: colors.$grey-100;
     box-shadow: none;
@@ -26,19 +27,22 @@
     &:hover {
       border-color: colors.$grey-100;
       background: colors.$grey-100;
+
       &.error {
         border-color: colors.$red;
       }
     }
 
+    /* stylelint-disable-next-line selector-class-pattern */
     & :global(.react-select__control--menu-is-open) {
       border: 1px solid colors.$blue;
       box-shadow: none;
       background: colors.$primaryColor12; // This is deprecated. What to use instead?
     }
 
+    /* stylelint-disable-next-line selector-class-pattern */
     & :global(.react-select__multi-value) {
-      background: rgba(255, 255, 255, 0);
+      background: rgba(255, 255, 255, 0%);
     }
 
     * {
@@ -47,8 +51,4 @@
       display: flex;
     }
   }
-}
-
-.error,
-.withBorder {
 }
