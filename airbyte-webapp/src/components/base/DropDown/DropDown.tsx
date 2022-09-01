@@ -17,7 +17,6 @@ import { SelectContainer } from "./SelectContainer";
 export type OptionType = any;
 
 export interface DropdownProps<T = unknown> extends Props<OptionType> {
-  withBorder?: boolean;
   fullText?: boolean;
   error?: boolean;
   selectProps?: T;
@@ -63,7 +62,6 @@ function DropDownInner<T = unknown>(props: DropdownProps<T>, ref: React.Forwarde
 
   const classes = classnames(dropdownStyles.dropdown, "react-select-container", {
     [dropdownStyles.error]: props.error,
-    [dropdownStyles.withBorder]: props.withBorder,
   });
 
   return (
