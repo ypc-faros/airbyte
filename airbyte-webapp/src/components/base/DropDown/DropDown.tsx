@@ -1,14 +1,16 @@
+import classnames from "classnames";
 import React from "react";
-import { CSSObjectWithLabel, GroupBase, Props, SelectComponentsConfig, StylesConfig } from "react-select";
-import Select from "react-select/dist/declarations/src/Select";
+import { GroupBase, Props, SelectComponentsConfig, StylesConfig } from "react-select";
+import Select from "react-select";
+import StateManagedSelect from "react-select/dist/declarations/src/Select";
 
 import { equal, naturalComparatorBy } from "utils/objects";
 
 import { DropdownIndicator } from "./components/DropdownIndicator";
 import Menu from "./components/Menu";
 import Option, { IDataItem } from "./components/Option";
-import SingleValue from "./components/SingleValue";
-import { CustomSelect } from "./CustomSelect";
+import { SingleValue } from "./components/SingleValue";
+import dropdownStyles from "./DropDown.module.scss";
 import { SelectContainer } from "./SelectContainer";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,17 +18,13 @@ export type OptionType = any;
 
 export interface DropdownProps<T = unknown> extends Props<OptionType> {
   withBorder?: boolean;
-  $withBorder?: boolean;
   fullText?: boolean;
   error?: boolean;
   selectProps?: T;
 }
 
 // eslint-disable-next-line react/function-component-definition
-function DropDownInner<T = unknown>(
-  props: DropdownProps<T>,
-  ref: React.ForwardedRef<Select<unknown, boolean, GroupBase<unknown>>>
-) {
+function DropDownInner<T = unknown>(props: DropdownProps<T>, ref: React.ForwardedRef<StateManagedSelect>) {
   const propsComponents = props.components;
 
   const components = React.useMemo<SelectComponentsConfig<OptionType, boolean, GroupBase<unknown>>>(
@@ -57,18 +55,22 @@ function DropDownInner<T = unknown>(
   const styles: StylesConfig = {
     ...(props.styles ?? {}),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    menuPortal: (base: CSSObjectWithLabel, menuPortalProps: any) => ({
+    menuPortal: (base, menuPortalProps) => ({
       ...(props.styles?.menuPortal?.(base, menuPortalProps) ?? { ...base }),
       zIndex: 9999,
     }),
   };
 
+  const classes = classnames(dropdownStyles.dropdown, "react-select-container", {
+    [dropdownStyles.error]: props.error,
+    [dropdownStyles.withBorder]: props.withBorder,
+  });
+
   return (
-    <CustomSelect
+    <Select
       ref={ref}
+      className={classes}
       data-testid={props.name}
-      $error={props.error}
-      className="react-select-container"
       classNamePrefix="react-select"
       menuPortalTarget={document.body}
       placeholder="..."

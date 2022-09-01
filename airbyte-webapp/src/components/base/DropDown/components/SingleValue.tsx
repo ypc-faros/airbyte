@@ -21,7 +21,7 @@ export const Icon = styled.div`
   display: inline-block;
 `;
 
-const SingleValue = <T extends { data: { img: string } }>(props: React.PropsWithChildren<IProps<T>>) => {
+const SingleValueInner = <T extends { data: { img: string } }>(props: React.PropsWithChildren<IProps<T>>) => {
   return (
     <ItemView>
       {props.data.img ? <Icon>{props.data.img}</Icon> : null}
@@ -32,4 +32,4 @@ const SingleValue = <T extends { data: { img: string } }>(props: React.PropsWith
   );
 };
 
-export default React.memo(SingleValue);
+export const SingleValue = React.memo(SingleValueInner);

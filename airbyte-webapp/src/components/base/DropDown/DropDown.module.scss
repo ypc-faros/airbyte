@@ -1,0 +1,54 @@
+@use "../../../scss/colors";
+@use "../../../scss/variables";
+
+.dropdown {
+  > :global(.react-select__control) {
+    background: colors.$grey-100;
+    box-shadow: none;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    min-height: 36px;
+    height: 36px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: colors.$grey-50;
+
+    &.withBorder {
+      height: 31px;
+      border-color: colors.$grey-30;
+    }
+
+    &.error {
+      border-color: colors.$red;
+    }
+
+    &:hover {
+      border-color: colors.$grey-100;
+      background: colors.$grey-100;
+      &.error {
+        border-color: colors.$red;
+      }
+    }
+
+    & :global(.react-select__control--menu-is-open) {
+      border: 1px solid colors.$blue;
+      box-shadow: none;
+      background: colors.$primaryColor12; // This is deprecated. What to use instead?
+    }
+
+    & :global(.react-select__multi-value) {
+      background: rgba(255, 255, 255, 0);
+    }
+
+    * {
+      // I sure hope this has no unintended side-effects!
+      overflow: visible;
+      display: flex;
+    }
+  }
+}
+
+.error,
+.withBorder {
+}

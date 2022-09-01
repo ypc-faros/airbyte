@@ -107,7 +107,6 @@ const SyncSettingsDropdown: React.FC<DropdownProps> = (props) => (
       Option,
       Control: DropdownControl,
     }}
-    $withBorder
   />
 );
 
