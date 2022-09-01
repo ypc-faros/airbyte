@@ -1,6 +1,12 @@
 @use "../../../scss/colors";
 @use "../../../scss/variables";
 
+// Do to the use of :global below typescript doesn't think these two classes exist even though they do.
+.withBorder,
+.error {
+  visibility: inherit;
+}
+
 .dropdown {
   /* stylelint-disable-next-line selector-class-pattern */
   > :global(.react-select__control) {
@@ -14,24 +20,6 @@
     border-width: 1px;
     border-style: solid;
     border-color: colors.$grey-50;
-
-    &.withBorder {
-      height: 31px;
-      border-color: colors.$grey-30;
-    }
-
-    &.error {
-      border-color: colors.$red;
-    }
-
-    &:hover {
-      border-color: colors.$grey-100;
-      background: colors.$grey-100;
-
-      &.error {
-        border-color: colors.$red;
-      }
-    }
 
     /* stylelint-disable-next-line selector-class-pattern */
     & :global(.react-select__control--menu-is-open) {
@@ -49,6 +37,33 @@
       // I sure hope this has no unintended side-effects!
       overflow: visible;
       display: flex;
+    }
+  }
+
+  &.withBorder {
+    /* stylelint-disable-next-line selector-class-pattern */
+    > :global(.react-select__control) {
+      height: 31px;
+      border-color: colors.$grey-30;
+    }
+  }
+
+  &.error {
+    /* stylelint-disable-next-line selector-class-pattern */
+    > :global(.react-select__control) {
+      border-color: colors.$red;
+    }
+  }
+
+  &:hover {
+    /* stylelint-disable-next-line selector-class-pattern */
+    > :global(.react-select__control) {
+      border-color: colors.$grey-100;
+      background: colors.$grey-100;
+
+      &.error {
+        border-color: colors.$red;
+      }
     }
   }
 }
