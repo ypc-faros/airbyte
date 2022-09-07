@@ -11,10 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.airbyte.commons.io.IOs;
 import io.airbyte.commons.json.Jsons;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import org.junit.jupiter.api.Test;
 
@@ -102,4 +104,23 @@ class JsonSchemaValidatorTest {
     assertNull(JsonSchemaValidator.getSchema(schemaFile, "NonExistentObject"));
   }
 
+  @Test
+  void testOneOf() throws Exception {
+    final JsonSchemaValidator validator = new JsonSchemaValidator();
+    String schemaPath = "/schema/oneof_test_schema.json";
+    InputStream schemaInputStream = getClass().getResourceAsStream(schemaPath);
+    JsonNode schema = getJsonNodeFromStreamContent(schemaInputStream);
+
+    String dataPath = "/data/oneof_test_config.json";
+    InputStream dataInputStream = getClass().getResourceAsStream(dataPath);
+    JsonNode node = getJsonNodeFromStreamContent(dataInputStream);
+
+    assertTrue(validator.validate(schema, node).isEmpty());
+    assertDoesNotThrow(() -> validator.ensure(schema, node));
+  }
+
+  private JsonNode getJsonNodeFromStreamContent(InputStream content) throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    return mapper.readTree(content);
+  }
 }
