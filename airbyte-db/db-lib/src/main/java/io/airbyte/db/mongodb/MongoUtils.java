@@ -140,7 +140,8 @@ public class MongoUtils {
     if (columnNames.contains(fieldName + AIRBYTE_SUFFIX)) {
       final JsonNode data = jsonNodes.get(fieldName);
       if (data != null) {
-        jsonNodes.put(fieldName, data.asText());
+//        jsonNodes.remove(fieldName);
+        jsonNodes.put(fieldName + AIRBYTE_SUFFIX, data.isTextual() ? data.asText(): data.toString());
       } else {
         LOGGER.debug("WARNING Field list out of sync, Document doesn't contain field: {}", fieldName);
       }
